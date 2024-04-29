@@ -1,0 +1,78 @@
+
+import './App.css';
+import Axios from "axios"
+import {useState,useEffect} from "react"
+
+export default function App() {
+  const [users,setUsres]=useState([])
+  const [name,setName]=useState("")
+  const [age,setAge]=useState("")
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+
+  useEffect(()=>{
+
+    Axios.get("http://localhost:5000/users")
+    .then(res=>{setUsres(res.data)})
+  },[users])
+  const createUser=()=>{
+    Axios.post("http://localhost:5000/createUser",{
+      name:name,
+      age:age,
+      email:email,
+      password:password
+    })
+    .then(res=>{
+      console.log(res.data)
+    })
+  }
+  return (
+    <>
+    
+
+    {users.map(user=>{
+      return(
+        <div className="card">
+        <ul>
+          <li>name:{user.name}</li>
+          <li>Age:{user.age}</li>
+          <li>email:{user.email}</li>
+        </ul>
+       </div>
+      )
+    })}
+
+
+    <div>
+      <input type="text" placeholder="Name"  onChange={e=>setName(e.target.value)}/>
+      <input type="number" placeholder="Age" onChange={e=>setAge(e.target.value)} />
+      <input type="text" placeholder="Email"  onChange={e=>setEmail(e.target.value)}/>
+      <input type="password" placeholder="Password"  onChange={e=>setPassword(e.target.value)}/>
+      <button onClick={createUser}>Create user</button>
+    </div>
+
+    <div id="g_id_onload"
+     data-client_id="374095984660-uqh9pfqkcq3emmt07l7adep40iha26il.apps.googleusercontent.com"
+     data-context="signup"
+     data-ux_mode="popup"
+     data-callback="loginCallback"
+     data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin"
+        data-type="standard"
+        data-shape="pill"
+        data-theme="filled_black"
+        data-text="continue_with"
+        data-size="large"
+        data-logo_alignment="left">
+    </div>
+    <script src="https://accounts.google.com/gsi/client" async></script>
+
+
+    </>
+      
+  );
+}
+
+
